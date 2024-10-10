@@ -1,14 +1,13 @@
 let weather = {
     apiKey: "",
     apiKey2: "",
-    // Funzione per caricare le chiavi API dal file JSON
     loadConfig: function() {
-        fetch('config.json')  // Carica il file JSON
-            .then(response => response.json())  // Parso il JSON
+        fetch('config.json')
+            .then(response => response.json())
             .then(config => {
-                this.apiKey = config.apiKey;  // Assegna la chiave API a apiKey
-                this.apiKey2 = config.apiKey2;  // Assegna la seconda chiave API a apiKey2
-                this.fetchWeather("Milan");  // Puoi anche chiamare la funzione di ricerca meteo dopo aver caricato le chiavi
+                this.apiKey = config.apiKey;
+                this.apiKey2 = config.apiKey2;
+                this.fetchWeather("Milan");
             })
             .catch(error => console.log("Error loading config:", error));
     },
@@ -34,7 +33,6 @@ let weather = {
         const { temp, humidity } = data.main;
         const { speed } = data.wind;
 
-        // Aggiorna le informazioni del tempo sul display
         document.querySelector(".city").innerText = "Weather in " + name;
         document.querySelector(".icon").src =
             "https://openweathermap.org/img/wn/" + icon + ".png";
@@ -46,7 +44,6 @@ let weather = {
             "Wind speed: " + speed + " km/h";
         document.querySelector(".weather").classList.remove("loading");
 
-        // Chiama la funzione per ottenere l'immagine di sfondo da Unsplash
         this.fetchCityImage(name);
     },
     fetchCityImage: function (city) {
@@ -59,7 +56,6 @@ let weather = {
                     const imageUrl = data.results[0].urls.raw;
                     const sizedImageUrl = `${imageUrl}&w=1600&h=900`;
 
-                    // Aggiorna lo sfondo dello pseudo-elemento body::before
                     const style = document.createElement('style');
                     style.innerHTML = `
                     body::before {
@@ -79,15 +75,15 @@ let weather = {
     }
 };
 
-// Carica la configurazione all'inizio
+
 weather.loadConfig();
 
-// Event listener per il pulsante di ricerca
+
 document.querySelector(".search button").addEventListener("click", function () {
     weather.search();
 });
 
-// Event listener per l'input nella barra di ricerca (per cercare premendo "Enter")
+
 document.querySelector(".search-bar").addEventListener("keyup", function (event) {
     if (event.key == "Enter") {
         weather.search();
